@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fit_kit/fit_kit.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,50 +15,48 @@ class _MyAppState extends State<MyApp> {
   String mySteps;
   var result;
   var steps;
+  double st;
+  double cl;
+  double ht;
+  double wt;
+  double heartrate;
 
   Future<void> read() async {
     bool permissions;
-    int st = 0;
-    int i;
+    int i = 0;
+    int j = 0;
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
-    // permissions = await FitKit.requestPermissions(DataType.values);
-
-    // // await FitKit.requestPermissions([DataType.STEP_COUNT])
-    // if (permissions) {
-    //   // var results = await FitKit.read(DataType.SLEEP,
-    //   //     dateFrom: DateTime.now().subtract(Duration(days: 9)).toLocal(),
-    //   //     dateTo: DateTime.now().subtract(Duration(days: 8)).toLocal())
-    //   var results = await FitKit.read(DataType.STEP_COUNT,
-    //       dateFrom: DateTime.now().subtract(Duration(days: 1)),
-    //       dateTo: DateTime.now());
-
-    //   print(results.toString());
-    //   mySteps = results.toString();
-    // } else {
-    //   print("request not granted");
-    // }
+    st = 0.0;
+    cl = 0.0;
+    ht = 0.0;
+    wt = 0.0;
 
     try {
       permissions = await FitKit.requestPermissions(DataType.values);
-      print(date);
+      var arr = [DataType.STEP_COUNT, DataType.ENERGY];
+      var results;
+      // print(date);
       if (!permissions) {
         result = 'requestPermissions: failed';
       } else {
-        var results = await FitKit.read(DataType.STEP_COUNT,
-            dateFrom: DateTime.parse(date.toString()), dateTo: DateTime.now());
-
-        result = 'readAll: success';
-        // steps = results;
-        print(results.length);
-        // print(results);
-        for (i = 0; i < results.length; i++) {
-          st = st + results[i].value;
+        for (i = 0; i < arr.length; i++) {
+          if (arr[i].toString() == "DataType.STEP_COUNT") {
+            results = await FitKit.read(DataType.STEP_COUNT,
+                dateFrom: DateTime.parse(date.toString()),
+                dateTo: DateTime.now());
+            for (j = 0; j < results.length; j++) {
+              st = results[j].value + st;
+            }
+          } else {
+            results = await FitKit.read(DataType.ENERGY,
+                dateFrom: DateTime.parse(date.toString()),
+                dateTo: DateTime.now());
+            for (j = 0; j < results.length; j++) {
+              cl = results[j].value + cl;
+            }
+          }
         }
-        // print(i);
-        // print(results[50].value);
-        // print(results);
-        print(st);
       }
     } catch (e) {
       result = 'readAll: $e';
@@ -74,67 +73,34 @@ class _MyAppState extends State<MyApp> {
       ),
       home: Scaffold(
         floatingActionButton: FloatingActionButton(
-            onPressed: () => read(), child: Icon(Icons.check)),
-        body: Center(child: Text("steps")),
+            splashColor: Colors.amber[400],
+            onPressed: () => read(),
+            child: Icon(Icons.check)),
+        body: Center(
+          child: ListView(
+            padding: const EdgeInsets.all(8),
+            children: <Widget>[
+              Container(
+                  height: 50,
+                  color: Colors.amber[200],
+                  child: Row(children: <Widget>[
+                    Icon(Foundation.foot),
+                    Text("Steps   $st")
+                  ])),
+              Container(
+                height: 50,
+                color: Colors.amber[200],
+                child: Row(children: <Widget>[
+                  Icon(MaterialCommunityIcons.fire),
+                  Text("Calories   $cl")
+                ]),
+              ),
+            ],
+          ),
+        ),
+        // child: Text("steps        $st")
       ),
     );
   }
 }
 
-/*Future<void> read() async {
-    results.clear();
-
-    try {
-      permissions = await FitKit.requestPermissions(DataType.values);
-      if (!permissions) {
-        result = 'requestPermissions: failed';
-      } else {
-        for (DataType type in DataType.values) {
-          results[type] = await FitKit.read(
-            type,
-            dateFrom: _dateFrom,
-            dateTo: _dateTo,
-            limit: _limit,
-          );
-        }
-
-        result = 'readAll: success';
-      }
-    } catch (e) {
-      result = 'readAll: $e';
-    }
-
-    setState(() {});
-  }*/
-/*void readAll() async {
-  
-  bool permissions;
-  try {
-      permissions = await FitKit.requestPermissions(DataType.values);
-      if (!permissions) {
-        print( 'requestPermissions: failed');
-      } else {
-        for (DataType type in DataType.values) {
-          print( await FitKit.read(
-            type,
-            dateFrom:DateTime.now().subtract(Duration(days:1)),dateTo: DateTime.now()
-          ).toString());
-        }
-
-        print( 'readAll: success');
-      }
-    } catch (e) {
-      print('readAll: $e');
-    }
-*/
-
-/*if (await FitKit.requestPermissions([DataType.STEP_COUNT])) {
-    for (DataType type in DataType.values) {
-      final results = await FitKit.read(
-        type,
-        dateFrom: DateTime.now().subtract(Duration(days: 5)),
-        dateTo: DateTime.now(),
-      );
-    }
-    //print(results.);
-    }*/
