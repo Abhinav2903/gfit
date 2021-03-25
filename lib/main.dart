@@ -15,7 +15,7 @@ class _MyAppState extends State<MyApp> {
   String mySteps;
   var result;
   var steps;
-  double st;
+  double st = 100.0;
   double cl;
   double ht;
   double wt;
@@ -80,6 +80,7 @@ class _MyAppState extends State<MyApp> {
           child: ListView(
             padding: const EdgeInsets.all(8),
             children: <Widget>[
+              
               Container(
                   height: 50,
                   color: Colors.amber[200],
@@ -95,6 +96,14 @@ class _MyAppState extends State<MyApp> {
                   Text("Calories   $cl")
                 ]),
               ),
+              Container(
+                  height: 400.0,
+                  child: CircularProgressIndicator(
+                    value: st / 10000.0,
+                    backgroundColor: Colors.white,
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.deepPurple[900]),
+                  ))
             ],
           ),
         ),
@@ -103,4 +112,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
