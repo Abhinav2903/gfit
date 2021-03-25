@@ -75,12 +75,11 @@ class _MyAppState extends State<MyApp> {
         floatingActionButton: FloatingActionButton(
             splashColor: Colors.amber[400],
             onPressed: () => read(),
-            child: Icon(Icons.check)),
+            child: Icon(Icons.refresh)),
         body: Center(
           child: ListView(
             padding: const EdgeInsets.all(8),
             children: <Widget>[
-              
               Container(
                   height: 50,
                   color: Colors.amber[200],
@@ -94,6 +93,46 @@ class _MyAppState extends State<MyApp> {
                 child: Row(children: <Widget>[
                   Icon(MaterialCommunityIcons.fire),
                   Text("Calories   $cl")
+                ]),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[200],
+                child: Row(children: <Widget>[
+                  Icon(MaterialCommunityIcons.heart),
+                  Text("Heart Rate   72")
+                ]),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[200],
+                child: Row(children: <Widget>[
+                  Icon(MaterialCommunityIcons.cup_water),
+                  Text("Water   9")
+                ]),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[200],
+                child: Row(children: <Widget>[
+                  Icon(MaterialCommunityIcons.map_marker_distance),
+                  Text("Distance   1km")
+                ]),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[200],
+                child: Row(children: <Widget>[
+                  Icon(MaterialCommunityIcons.human_male_height),
+                  Text("Height   172cm")
+                ]),
+              ),
+              Container(
+                height: 50,
+                color: Colors.amber[200],
+                child: Row(children: <Widget>[
+                  Icon(MaterialCommunityIcons.weight_kilogram),
+                  Text("Weight   65kg")
                 ]),
               ),
               Container(
